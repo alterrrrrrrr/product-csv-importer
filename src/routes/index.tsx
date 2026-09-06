@@ -13,7 +13,7 @@ import {
 import { useLang } from "@/lib/i18n";
 
 /** Ile kafelków renderujemy w jednej porcji — reszta doładowuje się na żądanie. */
-const PAGE_SIZE = 24;
+const PAGE_SIZE = 48;
 
 /** „Best batch” / „Best” — jakość lub batch produktu zawiera słowo „best”. */
 function isBest(p: Product) {
