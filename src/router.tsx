@@ -3,7 +3,20 @@ import { createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 
 export const getRouter = () => {
-  const queryClient = new QueryClient();
+  // Zawsze świeże dane: zmiany z panelu widać od razu u wszystkich odwiedzających.
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 0,
+        gcTime: 60_000,
+        refetchOnMount: "always",
+        refetchOnWindowFocus: "always",
+        refetchOnReconnect: "always",
+        retry: 1,
+      },
+    },
+  });
+
 
   const router = createRouter({
     routeTree,

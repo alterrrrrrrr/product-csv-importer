@@ -10,33 +10,180 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AgenciRouteImport } from './routes/agenci'
+import { Route as CartRouteImport } from './routes/cart'
+import { Route as LinkiRouteImport } from './routes/linki'
+import { Route as OutfityRouteImport } from './routes/outfity'
+import { Route as PoradnikRouteImport } from './routes/poradnik'
+import { Route as PromocjeRouteImport } from './routes/promocje'
+import { Route as SellerRouteImport } from './routes/seller'
+import { Route as SprzedawcyRouteImport } from './routes/sprzedawcy'
+import { Route as SklepSlugRouteImport } from './routes/sklep.$slug'
+import { Route as ApiPublicProductImageRouteImport } from './routes/api/public/product-image'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgenciRoute = AgenciRouteImport.update({
+  id: '/agenci',
+  path: '/agenci',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CartRoute = CartRouteImport.update({
+  id: '/cart',
+  path: '/cart',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LinkiRoute = LinkiRouteImport.update({
+  id: '/linki',
+  path: '/linki',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OutfityRoute = OutfityRouteImport.update({
+  id: '/outfity',
+  path: '/outfity',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PoradnikRoute = PoradnikRouteImport.update({
+  id: '/poradnik',
+  path: '/poradnik',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PromocjeRoute = PromocjeRouteImport.update({
+  id: '/promocje',
+  path: '/promocje',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SellerRoute = SellerRouteImport.update({
+  id: '/seller',
+  path: '/seller',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SprzedawcyRoute = SprzedawcyRouteImport.update({
+  id: '/sprzedawcy',
+  path: '/sprzedawcy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SklepSlugRoute = SklepSlugRouteImport.update({
+  id: '/sklep/$slug',
+  path: '/sklep/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicProductImageRoute = ApiPublicProductImageRouteImport.update({
+  id: '/api/public/product-image',
+  path: '/api/public/product-image',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/agenci': typeof AgenciRoute
+  '/cart': typeof CartRoute
+  '/linki': typeof LinkiRoute
+  '/outfity': typeof OutfityRoute
+  '/poradnik': typeof PoradnikRoute
+  '/promocje': typeof PromocjeRoute
+  '/seller': typeof SellerRoute
+  '/sprzedawcy': typeof SprzedawcyRoute
+  '/sklep/$slug': typeof SklepSlugRoute
+  '/api/public/product-image': typeof ApiPublicProductImageRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/agenci': typeof AgenciRoute
+  '/cart': typeof CartRoute
+  '/linki': typeof LinkiRoute
+  '/outfity': typeof OutfityRoute
+  '/poradnik': typeof PoradnikRoute
+  '/promocje': typeof PromocjeRoute
+  '/seller': typeof SellerRoute
+  '/sprzedawcy': typeof SprzedawcyRoute
+  '/sklep/$slug': typeof SklepSlugRoute
+  '/api/public/product-image': typeof ApiPublicProductImageRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/agenci': typeof AgenciRoute
+  '/cart': typeof CartRoute
+  '/linki': typeof LinkiRoute
+  '/outfity': typeof OutfityRoute
+  '/poradnik': typeof PoradnikRoute
+  '/promocje': typeof PromocjeRoute
+  '/seller': typeof SellerRoute
+  '/sprzedawcy': typeof SprzedawcyRoute
+  '/sklep/$slug': typeof SklepSlugRoute
+  '/api/public/product-image': typeof ApiPublicProductImageRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/agenci'
+    | '/cart'
+    | '/linki'
+    | '/outfity'
+    | '/poradnik'
+    | '/promocje'
+    | '/seller'
+    | '/sprzedawcy'
+    | '/sklep/$slug'
+    | '/api/public/product-image'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/admin'
+    | '/agenci'
+    | '/cart'
+    | '/linki'
+    | '/outfity'
+    | '/poradnik'
+    | '/promocje'
+    | '/seller'
+    | '/sprzedawcy'
+    | '/sklep/$slug'
+    | '/api/public/product-image'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/agenci'
+    | '/cart'
+    | '/linki'
+    | '/outfity'
+    | '/poradnik'
+    | '/promocje'
+    | '/seller'
+    | '/sprzedawcy'
+    | '/sklep/$slug'
+    | '/api/public/product-image'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
+  AgenciRoute: typeof AgenciRoute
+  CartRoute: typeof CartRoute
+  LinkiRoute: typeof LinkiRoute
+  OutfityRoute: typeof OutfityRoute
+  PoradnikRoute: typeof PoradnikRoute
+  PromocjeRoute: typeof PromocjeRoute
+  SellerRoute: typeof SellerRoute
+  SprzedawcyRoute: typeof SprzedawcyRoute
+  SklepSlugRoute: typeof SklepSlugRoute
+  ApiPublicProductImageRoute: typeof ApiPublicProductImageRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +195,99 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agenci': {
+      id: '/agenci'
+      path: '/agenci'
+      fullPath: '/agenci'
+      preLoaderRoute: typeof AgenciRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cart': {
+      id: '/cart'
+      path: '/cart'
+      fullPath: '/cart'
+      preLoaderRoute: typeof CartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/linki': {
+      id: '/linki'
+      path: '/linki'
+      fullPath: '/linki'
+      preLoaderRoute: typeof LinkiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/outfity': {
+      id: '/outfity'
+      path: '/outfity'
+      fullPath: '/outfity'
+      preLoaderRoute: typeof OutfityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/poradnik': {
+      id: '/poradnik'
+      path: '/poradnik'
+      fullPath: '/poradnik'
+      preLoaderRoute: typeof PoradnikRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/promocje': {
+      id: '/promocje'
+      path: '/promocje'
+      fullPath: '/promocje'
+      preLoaderRoute: typeof PromocjeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/seller': {
+      id: '/seller'
+      path: '/seller'
+      fullPath: '/seller'
+      preLoaderRoute: typeof SellerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sprzedawcy': {
+      id: '/sprzedawcy'
+      path: '/sprzedawcy'
+      fullPath: '/sprzedawcy'
+      preLoaderRoute: typeof SprzedawcyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sklep/$slug': {
+      id: '/sklep/$slug'
+      path: '/sklep/$slug'
+      fullPath: '/sklep/$slug'
+      preLoaderRoute: typeof SklepSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/product-image': {
+      id: '/api/public/product-image'
+      path: '/api/public/product-image'
+      fullPath: '/api/public/product-image'
+      preLoaderRoute: typeof ApiPublicProductImageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
+  AgenciRoute: AgenciRoute,
+  CartRoute: CartRoute,
+  LinkiRoute: LinkiRoute,
+  OutfityRoute: OutfityRoute,
+  PoradnikRoute: PoradnikRoute,
+  PromocjeRoute: PromocjeRoute,
+  SellerRoute: SellerRoute,
+  SprzedawcyRoute: SprzedawcyRoute,
+  SklepSlugRoute: SklepSlugRoute,
+  ApiPublicProductImageRoute: ApiPublicProductImageRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

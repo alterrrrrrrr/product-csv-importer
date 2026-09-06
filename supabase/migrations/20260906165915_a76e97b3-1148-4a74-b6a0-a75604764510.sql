@@ -1,0 +1,1 @@
+ALTER TABLE public.products ADD COLUMN IF NOT EXISTS qc_images text[] NOT NULL DEFAULT '{}'::text[];
