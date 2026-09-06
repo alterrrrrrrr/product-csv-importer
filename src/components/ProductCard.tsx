@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { PriceTags, QualityBadges, VerifiedBadge } from "@/components/PriceTags";
 import type { Product } from "@/lib/store";
 import { useCart } from "@/lib/cart";
@@ -7,7 +8,7 @@ import { useLang } from "@/lib/i18n";
  * Lightweight grid card: single image + views, title, category, badges,
  * price and a "Sprawdź" CTA. Colorways / sizes / agent links live in the modal.
  */
-export function ProductCard({
+function ProductCardBase({
   product,
   onDetails,
 }: {
@@ -19,7 +20,7 @@ export function ProductCard({
   const inCart = has(product.id);
 
   return (
-    <article className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-surface transition-all hover:-translate-y-1 hover:border-primary/60 hover:glow-ring">
+    <article className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-surface transition-all [content-visibility:auto] [contain-intrinsic-size:380px] hover:-translate-y-1 hover:border-primary/60 hover:glow-ring">
       <div className="relative aspect-square overflow-hidden bg-secondary">
         {product.image_url ? (
           <img
@@ -77,3 +78,6 @@ export function ProductCard({
     </article>
   );
 }
+
+/** Karty renderują się setkami — memo ogranicza przerysowania przy filtrowaniu. */
+export const ProductCard = memo(ProductCardBase);
