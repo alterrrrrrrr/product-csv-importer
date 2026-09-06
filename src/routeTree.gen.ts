@@ -17,6 +17,7 @@ import { Route as LinkiRouteImport } from './routes/linki'
 import { Route as OutfityRouteImport } from './routes/outfity'
 import { Route as PoradnikRouteImport } from './routes/poradnik'
 import { Route as PromocjeRouteImport } from './routes/promocje'
+import { Route as QcRouteImport } from './routes/qc'
 import { Route as SellerRouteImport } from './routes/seller'
 import { Route as SprzedawcyRouteImport } from './routes/sprzedawcy'
 import { Route as SklepSlugRouteImport } from './routes/sklep.$slug'
@@ -62,6 +63,11 @@ const PromocjeRoute = PromocjeRouteImport.update({
   path: '/promocje',
   getParentRoute: () => rootRouteImport,
 } as any)
+const QcRoute = QcRouteImport.update({
+  id: '/qc',
+  path: '/qc',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SellerRoute = SellerRouteImport.update({
   id: '/seller',
   path: '/seller',
@@ -92,6 +98,7 @@ export interface FileRoutesByFullPath {
   '/outfity': typeof OutfityRoute
   '/poradnik': typeof PoradnikRoute
   '/promocje': typeof PromocjeRoute
+  '/qc': typeof QcRoute
   '/seller': typeof SellerRoute
   '/sprzedawcy': typeof SprzedawcyRoute
   '/sklep/$slug': typeof SklepSlugRoute
@@ -106,6 +113,7 @@ export interface FileRoutesByTo {
   '/outfity': typeof OutfityRoute
   '/poradnik': typeof PoradnikRoute
   '/promocje': typeof PromocjeRoute
+  '/qc': typeof QcRoute
   '/seller': typeof SellerRoute
   '/sprzedawcy': typeof SprzedawcyRoute
   '/sklep/$slug': typeof SklepSlugRoute
@@ -121,6 +129,7 @@ export interface FileRoutesById {
   '/outfity': typeof OutfityRoute
   '/poradnik': typeof PoradnikRoute
   '/promocje': typeof PromocjeRoute
+  '/qc': typeof QcRoute
   '/seller': typeof SellerRoute
   '/sprzedawcy': typeof SprzedawcyRoute
   '/sklep/$slug': typeof SklepSlugRoute
@@ -137,6 +146,7 @@ export interface FileRouteTypes {
     | '/outfity'
     | '/poradnik'
     | '/promocje'
+    | '/qc'
     | '/seller'
     | '/sprzedawcy'
     | '/sklep/$slug'
@@ -151,6 +161,7 @@ export interface FileRouteTypes {
     | '/outfity'
     | '/poradnik'
     | '/promocje'
+    | '/qc'
     | '/seller'
     | '/sprzedawcy'
     | '/sklep/$slug'
@@ -165,6 +176,7 @@ export interface FileRouteTypes {
     | '/outfity'
     | '/poradnik'
     | '/promocje'
+    | '/qc'
     | '/seller'
     | '/sprzedawcy'
     | '/sklep/$slug'
@@ -180,6 +192,7 @@ export interface RootRouteChildren {
   OutfityRoute: typeof OutfityRoute
   PoradnikRoute: typeof PoradnikRoute
   PromocjeRoute: typeof PromocjeRoute
+  QcRoute: typeof QcRoute
   SellerRoute: typeof SellerRoute
   SprzedawcyRoute: typeof SprzedawcyRoute
   SklepSlugRoute: typeof SklepSlugRoute
@@ -244,6 +257,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PromocjeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/qc': {
+      id: '/qc'
+      path: '/qc'
+      fullPath: '/qc'
+      preLoaderRoute: typeof QcRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/seller': {
       id: '/seller'
       path: '/seller'
@@ -284,6 +304,7 @@ const rootRouteChildren: RootRouteChildren = {
   OutfityRoute: OutfityRoute,
   PoradnikRoute: PoradnikRoute,
   PromocjeRoute: PromocjeRoute,
+  QcRoute: QcRoute,
   SellerRoute: SellerRoute,
   SprzedawcyRoute: SprzedawcyRoute,
   SklepSlugRoute: SklepSlugRoute,
