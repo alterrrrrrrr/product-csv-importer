@@ -4,6 +4,7 @@ import type { Agent, Product } from "@/lib/store";
 import { registerProductView } from "@/lib/secure.functions";
 import { safeStorage } from "@/lib/store";
 import { useLang } from "@/lib/i18n";
+import { QcGrid } from "@/components/QcViewer";
 
 /** Interactive shopping modal: pick colorway + size, then buy through an agent. */
 export function ProductModal({

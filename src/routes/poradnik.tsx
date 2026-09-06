@@ -6,6 +6,8 @@ import { convertLink, extractSourceLink } from "@/lib/linkConverter";
 import { useLang } from "@/lib/i18n";
 import { useServerFn } from "@tanstack/react-start";
 import { trackParcel, type TrackResult } from "@/lib/tracking.functions";
+import { lookupQc } from "@/lib/media.functions";
+import { QcGrid } from "@/components/QcViewer";
 
 export const Route = createFileRoute("/poradnik")({
   head: () => ({
