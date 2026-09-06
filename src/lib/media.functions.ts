@@ -69,9 +69,9 @@ export const syncProductMedia = createServerFn({ method: "POST" })
           ).slice(0, 40);
           const mainOk = p.image_url && external(p.image_url);
           const patch: { images?: string[]; qc_images?: string[]; image_url?: string } = {};
-          if (images.length) patch["images"] = images;
-          if (qc.length) patch["qc_images"] = qc;
-          if (!mainOk && images.length) patch["image_url"] = images[0];
+          if (images.length) patch.images = images;
+          if (qc.length) patch.qc_images = qc;
+          if (!mainOk && images.length) patch.image_url = images[0]!;
           if (!Object.keys(patch).length) return void skipped++;
 
           const { error: upErr } = await supabaseAdmin.from("products").update(patch).eq("id", p.id);
