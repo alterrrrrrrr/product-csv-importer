@@ -7,6 +7,7 @@ import { convertLink, extractSourceLink } from "@/lib/linkConverter";
 import { ProductCard } from "@/components/ProductCard";
 import { ImageUploader } from "@/components/ImageUploader";
 import { scrapeProduct } from "@/lib/scrape.functions";
+import { syncProductMedia } from "@/lib/media.functions";
 import { DICT, DICT_KEYS, i18nSettingKey } from "@/lib/i18n";
 import { DEFAULT_SHIRT_SIZES, isShirt, parseDelimited, rowsToProducts } from "@/lib/csvImport";
 import { fetchSheetCsv } from "@/lib/sheet.functions";
@@ -1091,6 +1092,57 @@ function ToggleChip({
   );
 }
 
+/** Uzupełnianie zdjęć produktów i QC z otwartego API agentów. */
+function MediaSync() {
+  const refresh = useRefresh();
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState("");
+
+  const run = async (onlyMissing: boolean) => {
+    setBusy(true);
+    setMsg("Pobieram zdjęcia i QC od agentów...");
+    let updated = 0;
+    try {
+      for (let i = 0; i < 12; i++) {
+        const res: any = await syncProductMedia({
+          data: { token: getPanelToken(), limit: 30, onlyMissing },
+        });
+        updated += Number(res?.updated ?? 0);
+        setMsg(`Zaktualizowano ${updated} produktów...`);
+        if (!res?.checked || res.updated === 0) break;
+      }
+      await refresh("products");
+      setMsg(`Gotowe — zaktualizowano ${updated} produktów.`);
+    } catch {
+      setMsg("Nie udało się pobrać zdjęć — spróbuj ponownie.");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <div className="mb-4 rounded-xl border border-border bg-secondary p-3">
+      <div className="flex flex-wrap items-center gap-2">
+        <button
+          onClick={() => void run(true)}
+          disabled={busy}
+          className="rounded-lg gradient-brand px-4 py-2 text-xs font-extrabold uppercase tracking-wide text-surface-deep disabled:opacity-60"
+        >
+          Uzupełnij brakujące zdjęcia + QC
+        </button>
+        <button
+          onClick={() => void run(false)}
+          disabled={busy}
+          className="rounded-lg border border-border px-4 py-2 text-xs font-semibold text-muted-foreground hover:border-primary hover:text-primary disabled:opacity-60"
+        >
+          Odśwież QC wszystkich produktów
+        </button>
+        {msg ? <span className="text-xs text-muted-foreground">{msg}</span> : null}
+      </div>
+    </div>
+  );
+}
+
 function ProductsTab() {
 
   const { data: products } = useProducts();
@@ -1571,6 +1623,8 @@ function ProductsTab() {
         <p className="mb-3 text-xs text-muted-foreground">
           Przeciągnij kafelek myszką (uchwyt ⠿), aby zmienić kolejność — zapisuje się od razu.
         </p>
+        <MediaSync />
+
         <input
           className={`${input} mb-4`}
           placeholder="🔎 Szukaj produktu (nazwa, kategoria, batch, sklep)"

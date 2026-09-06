@@ -58,7 +58,7 @@ function LinkiPage() {
             onClick={() => setCat(c.name)}
             className={`rounded-lg border px-3 py-1.5 text-xs font-semibold ${cat === c.name ? "border-primary text-primary glow-ring" : "border-border text-muted-foreground"}`}
           >
-            {c.name}
+            {t(`cat.${c.name}`, c.name)}
           </button>
         ))}
       </div>

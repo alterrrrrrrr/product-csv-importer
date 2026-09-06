@@ -64,6 +64,7 @@ const tabs = [
   { to: "/promocje", key: "nav.promos", icon: "🔥" },
   { to: "/poradnik", key: "nav.guide", icon: "📘" },
   { to: "/linki", key: "nav.tiktok", icon: "🎵" },
+  { to: "/qc", key: "nav.qc", icon: "📸" },
 ] as const;
 
 export function Header() {
