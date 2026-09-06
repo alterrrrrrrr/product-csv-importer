@@ -14,10 +14,392 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      agents: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          id: string
+          name: string
+          referral_url: string
+          sort_order: number
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          id?: string
+          name: string
+          referral_url?: string
+          sort_order?: number
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          id?: string
+          name?: string
+          referral_url?: string
+          sort_order?: number
+        }
+        Relationships: []
+      }
+      categories: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          slug: string
+          sort_order: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          slug: string
+          sort_order?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          slug?: string
+          sort_order?: number
+        }
+        Relationships: []
+      }
+      guide_steps: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          image_url: string | null
+          step_number: number
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string
+          id?: string
+          image_url?: string | null
+          step_number?: number
+          title: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          image_url?: string | null
+          step_number?: number
+          title?: string
+        }
+        Relationships: []
+      }
+      products: {
+        Row: {
+          agent_links: Json
+          batch: string
+          category: string
+          created_at: string
+          display_order: number
+          for_women: boolean
+          id: string
+          image_url: string | null
+          images: string[]
+          price: number
+          price_cny: number
+          promoted: boolean
+          qc_images: string[]
+          qc_url: string | null
+          quality: string
+          seller_id: string | null
+          show_on_home: boolean
+          sizes: string[]
+          store_name: string
+          store_url: string
+          tiktok_url: string | null
+          title: string
+          verified: boolean
+          views: number
+        }
+        Insert: {
+          agent_links?: Json
+          batch?: string
+          category?: string
+          created_at?: string
+          display_order?: number
+          for_women?: boolean
+          id?: string
+          image_url?: string | null
+          images?: string[]
+          price?: number
+          price_cny?: number
+          promoted?: boolean
+          qc_images?: string[]
+          qc_url?: string | null
+          quality?: string
+          seller_id?: string | null
+          show_on_home?: boolean
+          sizes?: string[]
+          store_name?: string
+          store_url?: string
+          tiktok_url?: string | null
+          title: string
+          verified?: boolean
+          views?: number
+        }
+        Update: {
+          agent_links?: Json
+          batch?: string
+          category?: string
+          created_at?: string
+          display_order?: number
+          for_women?: boolean
+          id?: string
+          image_url?: string | null
+          images?: string[]
+          price?: number
+          price_cny?: number
+          promoted?: boolean
+          qc_images?: string[]
+          qc_url?: string | null
+          quality?: string
+          seller_id?: string | null
+          show_on_home?: boolean
+          sizes?: string[]
+          store_name?: string
+          store_url?: string
+          tiktok_url?: string | null
+          title?: string
+          verified?: boolean
+          views?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "products_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "sellers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "products_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "sellers_public"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      promos: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          image_url: string | null
+          link_url: string
+          sort_order: number
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string
+          id?: string
+          image_url?: string | null
+          link_url?: string
+          sort_order?: number
+          title: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          image_url?: string | null
+          link_url?: string
+          sort_order?: number
+          title?: string
+        }
+        Relationships: []
+      }
+      sellers: {
+        Row: {
+          active: boolean
+          banner_url: string | null
+          created_at: string
+          description: string
+          external_url: string
+          id: string
+          link_mode: string
+          logo_url: string | null
+          name: string
+          password_hash: string
+          slug: string
+          updated_at: string
+          username: string
+        }
+        Insert: {
+          active?: boolean
+          banner_url?: string | null
+          created_at?: string
+          description?: string
+          external_url?: string
+          id?: string
+          link_mode?: string
+          logo_url?: string | null
+          name: string
+          password_hash?: string
+          slug: string
+          updated_at?: string
+          username: string
+        }
+        Update: {
+          active?: boolean
+          banner_url?: string | null
+          created_at?: string
+          description?: string
+          external_url?: string
+          id?: string
+          link_mode?: string
+          logo_url?: string | null
+          name?: string
+          password_hash?: string
+          slug?: string
+          updated_at?: string
+          username?: string
+        }
+        Relationships: []
+      }
+      settings: {
+        Row: {
+          key: string
+          value: string
+        }
+        Insert: {
+          key: string
+          value?: string
+        }
+        Update: {
+          key?: string
+          value?: string
+        }
+        Relationships: []
+      }
+      shipping_rates: {
+        Row: {
+          agent_name: string
+          base_price: number
+          coupon_code: string
+          created_at: string
+          discount_percent: number
+          id: string
+          line_name: string
+          max_weight: number
+          min_weight: number
+          price_per_kg: number
+          price_table: Json
+          signup_url: string
+          sort_order: number
+        }
+        Insert: {
+          agent_name: string
+          base_price?: number
+          coupon_code?: string
+          created_at?: string
+          discount_percent?: number
+          id?: string
+          line_name?: string
+          max_weight?: number
+          min_weight?: number
+          price_per_kg?: number
+          price_table?: Json
+          signup_url?: string
+          sort_order?: number
+        }
+        Update: {
+          agent_name?: string
+          base_price?: number
+          coupon_code?: string
+          created_at?: string
+          discount_percent?: number
+          id?: string
+          line_name?: string
+          max_weight?: number
+          min_weight?: number
+          price_per_kg?: number
+          price_table?: Json
+          signup_url?: string
+          sort_order?: number
+        }
+        Relationships: []
+      }
+      social_links: {
+        Row: {
+          created_at: string
+          icon: string
+          id: string
+          image_url: string | null
+          label: string
+          sort_order: number
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          icon?: string
+          id?: string
+          image_url?: string | null
+          label: string
+          sort_order?: number
+          url?: string
+        }
+        Update: {
+          created_at?: string
+          icon?: string
+          id?: string
+          image_url?: string | null
+          label?: string
+          sort_order?: number
+          url?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
-      [_ in never]: never
+      sellers_public: {
+        Row: {
+          active: boolean | null
+          banner_url: string | null
+          created_at: string | null
+          description: string | null
+          external_url: string | null
+          id: string | null
+          link_mode: string | null
+          logo_url: string | null
+          name: string | null
+          slug: string | null
+        }
+        Insert: {
+          active?: boolean | null
+          banner_url?: string | null
+          created_at?: string | null
+          description?: string | null
+          external_url?: string | null
+          id?: string | null
+          link_mode?: string | null
+          logo_url?: string | null
+          name?: string | null
+          slug?: string | null
+        }
+        Update: {
+          active?: boolean | null
+          banner_url?: string | null
+          created_at?: string | null
+          description?: string | null
+          external_url?: string | null
+          id?: string | null
+          link_mode?: string | null
+          logo_url?: string | null
+          name?: string | null
+          slug?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never
