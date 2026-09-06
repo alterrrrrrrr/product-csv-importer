@@ -128,33 +128,58 @@ function PackageTracker() {
 
 function QcInspector() {
   const { t } = useLang();
+  const run = useServerFn(lookupQc);
   const [id, setId] = useState("");
-  const link = id.trim() ? `https://cnfans.com/qc?id=${encodeURIComponent(id.trim())}` : "";
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState("");
+  const [images, setImages] = useState<string[] | null>(null);
+
+  const search = async () => {
+    const v = id.trim();
+    if (!v) return;
+    const url = /^https?:\/\//i.test(v) ? v : `https://weidian.com/item.html?itemID=${v}`;
+    setBusy(true);
+    setMsg("");
+    setImages(null);
+    try {
+      const res = await run({ data: { url } });
+      if (!res.ok) setMsg(t("qc.notFound", "Nie znaleziono produktu dla tego linku."));
+      else setImages([...res.qcImages, ...res.colorImages]);
+    } catch {
+      setMsg(t("qc.notFound", "Nie znaleziono produktu dla tego linku."));
+    } finally {
+      setBusy(false);
+    }
+  };
 
   return (
     <div className={card}>
       <h3 className="text-base font-bold">{t("guide.qcTitle")}</h3>
-      <p className="mt-1 text-xs text-muted-foreground">
-        {t("guide.qcDesc")}
-      </p>
+      <p className="mt-1 text-xs text-muted-foreground">{t("guide.qcDesc")}</p>
       <input
         className={`${field} mt-3`}
         placeholder={t("guide.qcPlaceholder")}
         value={id}
         onChange={(e) => setId(e.target.value)}
+        onKeyDown={(e) => e.key === "Enter" && void search()}
       />
-      <a
-        href={link || "#"}
-        target="_blank"
-        rel="noreferrer"
-        aria-disabled={!link}
-        className={`${cta} block text-center ${link ? "" : "pointer-events-none opacity-50"}`}
+      <button
+        onClick={() => void search()}
+        disabled={busy || !id.trim()}
+        className={`${cta} block w-full text-center ${busy || !id.trim() ? "opacity-50" : ""}`}
       >
-        {t("guide.qcCta")}
-      </a>
+        {busy ? t("qc.loading", "Szukam...") : t("guide.qcCta")}
+      </button>
+      {msg ? <p className="mt-3 text-xs text-muted-foreground">{msg}</p> : null}
+      {images ? (
+        <div className="mt-4">
+          <QcGrid images={images} cols="grid-cols-3 sm:grid-cols-4" />
+        </div>
+      ) : null}
     </div>
   );
 }
+
 
 function LinkConverter() {
   const { t } = useLang();
