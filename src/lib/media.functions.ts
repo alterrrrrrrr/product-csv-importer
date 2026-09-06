@@ -68,7 +68,7 @@ export const syncProductMedia = createServerFn({ method: "POST" })
             new Set([...(p.qc_images ?? []).filter(external), ...details.qcImages]),
           ).slice(0, 40);
           const mainOk = p.image_url && external(p.image_url);
-          const patch: Record<string, unknown> = {};
+          const patch: { images?: string[]; qc_images?: string[]; image_url?: string } = {};
           if (images.length) patch["images"] = images;
           if (qc.length) patch["qc_images"] = qc;
           if (!mainOk && images.length) patch["image_url"] = images[0];
