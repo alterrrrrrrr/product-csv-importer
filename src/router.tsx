@@ -7,11 +7,11 @@ export const getRouter = () => {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        staleTime: 0,
-        gcTime: 60_000,
-        refetchOnMount: "always",
-        refetchOnWindowFocus: "always",
-        refetchOnReconnect: "always",
+        staleTime: 60_000,
+        gcTime: 5 * 60_000,
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: true,
         retry: 1,
       },
     },
