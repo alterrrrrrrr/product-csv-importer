@@ -42,7 +42,7 @@ export const DICT: Record<string, Partial<Record<Lang, string>> & { pl: string; 
   "qc.loading": { pl: "Szukam...", en: "Searching..." },
   "qc.badLink": { pl: "Podaj poprawny link do produktu.", en: "Enter a valid product link." },
   "qc.notFound": { pl: "Nie znaleziono zdjęć QC dla tego linku.", en: "No QC photos found for this link." },
-  "qc.noPhotos": { pl: "Ten produkt nie ma jeszcze zdjęć QC.", en: "This product has no QC photos yet." },
+  "qc.noPhotos": { pl: "Brak zdjęć QC", en: "No QC photos" },
   "qc.result": { pl: "Wynik", en: "Result" },
   "qc.colors": { pl: "Kolorystyki produktu", en: "Product colorways" },
   "qc.catalog": { pl: "QC z katalogu", en: "QC from the catalog" },

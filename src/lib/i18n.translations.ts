@@ -20,7 +20,7 @@ export const EXTRA_TRANSLATIONS: Record<string, L> = {
   "qc.loading": { de: "Suche...", fr: "Recherche...", es: "Buscando...", it: "Ricerca...", zh: "搜索中..." },
   "qc.badLink": { de: "Bitte gültigen Produktlink eingeben.", fr: "Entre un lien produit valide.", es: "Introduce un enlace de producto válido.", it: "Inserisci un link prodotto valido.", zh: "请输入有效的商品链接。" },
   "qc.notFound": { de: "Keine QC-Fotos für diesen Link gefunden.", fr: "Aucune photo QC trouvée pour ce lien.", es: "No se encontraron fotos QC para este enlace.", it: "Nessuna foto QC trovata per questo link.", zh: "未找到该链接的 QC 图片。" },
-  "qc.noPhotos": { de: "Dieses Produkt hat noch keine QC-Fotos.", fr: "Ce produit n'a pas encore de photos QC.", es: "Este producto aún no tiene fotos QC.", it: "Questo prodotto non ha ancora foto QC.", zh: "该商品暂无 QC 图片。" },
+  "qc.noPhotos": { de: "Keine QC-Fotos", fr: "Pas de photos QC", es: "Sin fotos QC", it: "Nessuna foto QC", zh: "暂无 QC 图片" },
   "qc.result": { de: "Ergebnis", fr: "Résultat", es: "Resultado", it: "Risultato", zh: "结果" },
   "qc.colors": { de: "Farbvarianten", fr: "Coloris du produit", es: "Colores del producto", it: "Colorazioni del prodotto", zh: "商品配色" },
   "qc.catalog": { de: "QC aus dem Katalog", fr: "QC du catalogue", es: "QC del catálogo", it: "QC dal catalogo", zh: "目录中的 QC" },
