@@ -22,7 +22,6 @@ import { Route as SellerRouteImport } from './routes/seller'
 import { Route as SprzedawcyRouteImport } from './routes/sprzedawcy'
 import { Route as SklepSlugRouteImport } from './routes/sklep.$slug'
 import { Route as ApiPublicProductImageRouteImport } from './routes/api/public/product-image'
-import { Route as ApiPublicTmpBackfillRouteImport } from './routes/api/public/tmp-backfill'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -89,11 +88,6 @@ const ApiPublicProductImageRoute = ApiPublicProductImageRouteImport.update({
   path: '/api/public/product-image',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicTmpBackfillRoute = ApiPublicTmpBackfillRouteImport.update({
-  id: '/api/public/tmp-backfill',
-  path: '/api/public/tmp-backfill',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -109,7 +103,6 @@ export interface FileRoutesByFullPath {
   '/sprzedawcy': typeof SprzedawcyRoute
   '/sklep/$slug': typeof SklepSlugRoute
   '/api/public/product-image': typeof ApiPublicProductImageRoute
-  '/api/public/tmp-backfill': typeof ApiPublicTmpBackfillRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -125,7 +118,6 @@ export interface FileRoutesByTo {
   '/sprzedawcy': typeof SprzedawcyRoute
   '/sklep/$slug': typeof SklepSlugRoute
   '/api/public/product-image': typeof ApiPublicProductImageRoute
-  '/api/public/tmp-backfill': typeof ApiPublicTmpBackfillRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -142,7 +134,6 @@ export interface FileRoutesById {
   '/sprzedawcy': typeof SprzedawcyRoute
   '/sklep/$slug': typeof SklepSlugRoute
   '/api/public/product-image': typeof ApiPublicProductImageRoute
-  '/api/public/tmp-backfill': typeof ApiPublicTmpBackfillRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -160,7 +151,6 @@ export interface FileRouteTypes {
     | '/sprzedawcy'
     | '/sklep/$slug'
     | '/api/public/product-image'
-    | '/api/public/tmp-backfill'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -176,7 +166,6 @@ export interface FileRouteTypes {
     | '/sprzedawcy'
     | '/sklep/$slug'
     | '/api/public/product-image'
-    | '/api/public/tmp-backfill'
   id:
     | '__root__'
     | '/'
@@ -192,7 +181,6 @@ export interface FileRouteTypes {
     | '/sprzedawcy'
     | '/sklep/$slug'
     | '/api/public/product-image'
-    | '/api/public/tmp-backfill'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -209,7 +197,6 @@ export interface RootRouteChildren {
   SprzedawcyRoute: typeof SprzedawcyRoute
   SklepSlugRoute: typeof SklepSlugRoute
   ApiPublicProductImageRoute: typeof ApiPublicProductImageRoute
-  ApiPublicTmpBackfillRoute: typeof ApiPublicTmpBackfillRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -305,13 +292,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicProductImageRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/tmp-backfill': {
-      id: '/api/public/tmp-backfill'
-      path: '/api/public/tmp-backfill'
-      fullPath: '/api/public/tmp-backfill'
-      preLoaderRoute: typeof ApiPublicTmpBackfillRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -329,7 +309,6 @@ const rootRouteChildren: RootRouteChildren = {
   SprzedawcyRoute: SprzedawcyRoute,
   SklepSlugRoute: SklepSlugRoute,
   ApiPublicProductImageRoute: ApiPublicProductImageRoute,
-  ApiPublicTmpBackfillRoute: ApiPublicTmpBackfillRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
