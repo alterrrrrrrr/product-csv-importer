@@ -4,6 +4,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { lookupQc } from "@/lib/media.functions";
 import { useProducts, type Product } from "@/lib/store";
 import { useLang } from "@/lib/i18n";
+import { QcGrid } from "@/components/QcViewer";
 
 export const Route = createFileRoute("/qc")({
   head: () => ({
@@ -36,7 +37,7 @@ function QcPage() {
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<Lookup>(null);
   const [error, setError] = useState("");
-  const [zoom, setZoom] = useState("");
+  
 
   const withQc = useMemo(
     () => (products ?? []).filter((p: Product) => (p.qc_images ?? []).length > 0),
