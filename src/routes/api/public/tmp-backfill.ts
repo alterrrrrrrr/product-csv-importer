@@ -5,10 +5,32 @@ const SECRET = "tmp-8f2a91c4-backfill";
 export const Route = createFileRoute("/api/public/tmp-backfill")({
   server: {
     handlers: {
+      POST: async ({ request }) => {
+        const url = new URL(request.url);
+        if (url.searchParams.get("key") !== SECRET) return new Response("no", { status: 401 });
+        const body = (await request.json()) as {
+          updates: { id: string; images: string[]; qc: string[] }[];
+        };
+        const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+        let saved = 0;
+        for (const u of body.updates ?? []) {
+          const patch: Record<string, unknown> = {};
+          if (u.images?.length) {
+            patch["images"] = u.images.slice(0, 24);
+            patch["image_url"] = u.images[0];
+          }
+          if (u.qc?.length) patch["qc_images"] = u.qc.slice(0, 40);
+          if (!Object.keys(patch).length) continue;
+          const { error } = await supabaseAdmin.from("products").update(patch).eq("id", u.id);
+          if (!error) saved++;
+        }
+        return Response.json({ saved });
+      },
       GET: async ({ request }) => {
         const url = new URL(request.url);
         if (url.searchParams.get("key") !== SECRET) return new Response("no", { status: 401 });
         const offset = Number(url.searchParams.get("offset") ?? 0);
+        const listOnly = url.searchParams.get("list") === "1";
         const limit = Math.min(40, Number(url.searchParams.get("limit") ?? 20));
 
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -23,6 +45,7 @@ export const Route = createFileRoute("/api/public/tmp-backfill")({
 
         if (error) return Response.json({ error: error.message }, { status: 500 });
 
+        if (listOnly) return Response.json({ rows });
         let updated = 0;
         let skipped = 0;
         const diag: string[] = [];
