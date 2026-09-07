@@ -1186,6 +1186,7 @@ function ProductsTab() {
   const [limit, setLimit] = useState(ADMIN_PAGE_SIZE);
   // Optymistyczna kolejność — lista przestawia się natychmiast, zapis leci w tle.
   const [orderIds, setOrderIds] = useState<string[] | null>(null);
+  const [onlyIssues, setOnlyIssues] = useState(false);
 
   const ordered = useMemo(() => {
     const list = products ?? [];
@@ -1201,9 +1202,17 @@ function ProductsTab() {
   /** Produkt bez działającego zdjęcia — trafia na samą górę listy do poprawy. */
   const brokenImage = (p: Product) =>
     !p.image_url || p.image_url.startsWith("/api/public/product-image");
+  const noQc = (p: Product) => (p.qc_images ?? []).length === 0;
+  const noLink = (p: Product) =>
+    !p.store_url && Object.values(p.agent_links ?? {}).filter(Boolean).length === 0;
+  /** Produkt wymagający uzupełnienia: brak zdjęcia, brak QC albo brak linku. */
+  const needsFix = (p: Product) => brokenImage(p) || noQc(p) || noLink(p);
+
+  const todo = useMemo(() => (products ?? []).filter(needsFix), [products]);
 
   const matched = useMemo(() => {
-    const list = ordered.filter((p) =>
+    const base = onlyIssues ? ordered.filter(needsFix) : ordered;
+    const list = base.filter((p) =>
       q
         ? [p.title, p.category, p.batch, p.store_name].some((v) =>
             (v ?? "").toLowerCase().includes(q),
@@ -1211,16 +1220,21 @@ function ProductsTab() {
         : true,
     );
     if (orderIds) return list;
-    // Stabilne sortowanie: najpierw produkty bez zdjęcia.
+    // Stabilne sortowanie: najpierw produkty do uzupełnienia.
     return list
       .map((p, i) => ({ p, i }))
-      .sort((a, b) => Number(brokenImage(b.p)) - Number(brokenImage(a.p)) || a.i - b.i)
+      .sort(
+        (a, b) =>
+          Number(brokenImage(b.p)) - Number(brokenImage(a.p)) ||
+          Number(needsFix(b.p)) - Number(needsFix(a.p)) ||
+          a.i - b.i,
+      )
       .map((x) => x.p);
-  }, [ordered, q, orderIds]);
+  }, [ordered, q, orderIds, onlyIssues]);
 
   useEffect(() => {
     setLimit(ADMIN_PAGE_SIZE);
-  }, [q]);
+  }, [q, onlyIssues]);
 
   const visible = matched.slice(0, limit);
   const remaining = matched.length - visible.length;
@@ -1329,6 +1343,35 @@ function ProductsTab() {
     await refresh("products");
   };
 
+  /** Wczytaj produkt do formularza edycji i przewiń na górę. */
+  const editProduct = (p: Product) => {
+    globalThis.scrollTo?.({ top: 0, behavior: "smooth" });
+    setForm({
+      id: p.id,
+      title: p.title,
+      category: p.category,
+      price: String(p.price),
+      image_url: p.image_url ?? "",
+      qc_url: p.qc_url ?? "",
+      quality: p.quality,
+      batch: p.batch ?? "",
+      sizes: (p.sizes ?? []).join(", "),
+      images: (p.images ?? []).join(", "),
+      qc_images: (p.qc_images ?? []).join(", "),
+      seller_id: p.seller_id ?? "",
+      tiktok_url: p.tiktok_url ?? "",
+      display_order: p.display_order ?? 0,
+      promoted: p.promoted,
+      for_women: p.for_women,
+      verified: p.verified,
+      show_on_home: p.show_on_home,
+      views: p.views,
+      store_url: p.store_url ?? "",
+      store_name: p.store_name ?? "",
+      agent_links: p.agent_links ?? {},
+    });
+  };
+
   const preview: Product = {
     id: "preview",
     verified: form.verified,
@@ -1356,6 +1399,64 @@ function ProductsTab() {
 
   return (
     <section className="space-y-6">
+      <div className="rounded-3xl border border-primary/40 bg-surface p-6 glow-ring">
+        <div className="mb-1 flex flex-wrap items-center justify-between gap-2">
+          <h2 className="text-lg font-bold">⚠️ Do uzupełnienia ({todo.length})</h2>
+          <button className={btnGhost} onClick={() => setOnlyIssues((v) => !v)}>
+            {onlyIssues ? "Pokaż wszystkie na liście" : "Filtruj listę poniżej"}
+          </button>
+        </div>
+        <p className="mb-4 text-xs text-muted-foreground">
+          Produkty bez zdjęcia, bez zdjęć QC lub bez linku do sklepu. Kliknij „Edytuj”, aby
+          uzupełnić od razu w formularzu poniżej.
+        </p>
+        {todo.length === 0 ? (
+          <p className="text-sm text-muted-foreground">Wszystko uzupełnione 🎉</p>
+        ) : (
+          <ul className="max-h-96 space-y-2 overflow-y-auto pr-1">
+            {todo.slice(0, 100).map((p) => (
+              <li
+                key={p.id}
+                className="flex items-center gap-3 rounded-lg border border-border bg-secondary p-2.5"
+              >
+                {p.image_url ? (
+                  <img src={p.image_url} alt="" className="h-9 w-9 rounded-lg object-cover" />
+                ) : (
+                  <span className="grid h-9 w-9 place-items-center rounded-lg bg-surface-deep text-xs">
+                    🚫
+                  </span>
+                )}
+                <span className="flex-1 truncate text-sm font-semibold">{p.title}</span>
+                <span className="flex flex-wrap gap-1">
+                  {brokenImage(p) ? (
+                    <span className="rounded-full bg-destructive/15 px-2 py-0.5 text-[10px] font-bold uppercase text-destructive">
+                      brak zdjęcia
+                    </span>
+                  ) : null}
+                  {noQc(p) ? (
+                    <span className="rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-bold uppercase text-primary">
+                      brak QC
+                    </span>
+                  ) : null}
+                  {noLink(p) ? (
+                    <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px] font-bold uppercase text-muted-foreground">
+                      brak linku
+                    </span>
+                  ) : null}
+                </span>
+                <button className={btnGhost} onClick={() => editProduct(p)}>
+                  Edytuj
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+        {todo.length > 100 ? (
+          <p className="mt-3 text-xs text-muted-foreground">
+            Pokazano pierwsze 100 z {todo.length} — użyj filtra listy poniżej dla reszty.
+          </p>
+        ) : null}
+      </div>
       <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
         <div className="rounded-3xl border border-border bg-surface p-6 shadow-lg shadow-black/20">
           <h2 className="mb-4 text-lg font-bold">
@@ -1698,36 +1799,7 @@ function ProductsTab() {
               >
                 ↓
               </button>
-              <button
-                className={btnGhost}
-                onClick={() => {
-                  globalThis.scrollTo?.({ top: 0, behavior: "smooth" });
-                  setForm({
-                    id: p.id,
-                    title: p.title,
-                    category: p.category,
-                    price: String(p.price),
-                    image_url: p.image_url ?? "",
-                    qc_url: p.qc_url ?? "",
-                    quality: p.quality,
-                    batch: p.batch ?? "",
-                    sizes: (p.sizes ?? []).join(", "),
-                    images: (p.images ?? []).join(", "),
-                    qc_images: (p.qc_images ?? []).join(", "),
-                    seller_id: p.seller_id ?? "",
-                    tiktok_url: p.tiktok_url ?? "",
-                    display_order: p.display_order ?? 0,
-                    promoted: p.promoted,
-                    for_women: p.for_women,
-                    verified: p.verified,
-                    show_on_home: p.show_on_home,
-                    views: p.views,
-                    store_url: p.store_url ?? "",
-                    store_name: p.store_name ?? "",
-                    agent_links: p.agent_links ?? {},
-                  });
-                }}
-              >
+              <button className={btnGhost} onClick={() => editProduct(p)}>
                 Edytuj
               </button>
               <button
