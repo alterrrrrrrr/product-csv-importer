@@ -1799,36 +1799,7 @@ function ProductsTab() {
               >
                 ↓
               </button>
-              <button
-                className={btnGhost}
-                onClick={() => {
-                  globalThis.scrollTo?.({ top: 0, behavior: "smooth" });
-                  setForm({
-                    id: p.id,
-                    title: p.title,
-                    category: p.category,
-                    price: String(p.price),
-                    image_url: p.image_url ?? "",
-                    qc_url: p.qc_url ?? "",
-                    quality: p.quality,
-                    batch: p.batch ?? "",
-                    sizes: (p.sizes ?? []).join(", "),
-                    images: (p.images ?? []).join(", "),
-                    qc_images: (p.qc_images ?? []).join(", "),
-                    seller_id: p.seller_id ?? "",
-                    tiktok_url: p.tiktok_url ?? "",
-                    display_order: p.display_order ?? 0,
-                    promoted: p.promoted,
-                    for_women: p.for_women,
-                    verified: p.verified,
-                    show_on_home: p.show_on_home,
-                    views: p.views,
-                    store_url: p.store_url ?? "",
-                    store_name: p.store_name ?? "",
-                    agent_links: p.agent_links ?? {},
-                  });
-                }}
-              >
+              <button className={btnGhost} onClick={() => editProduct(p)}>
                 Edytuj
               </button>
               <button
