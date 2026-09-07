@@ -1201,9 +1201,17 @@ function ProductsTab() {
   /** Produkt bez działającego zdjęcia — trafia na samą górę listy do poprawy. */
   const brokenImage = (p: Product) =>
     !p.image_url || p.image_url.startsWith("/api/public/product-image");
+  const noQc = (p: Product) => (p.qc_images ?? []).length === 0;
+  const noLink = (p: Product) =>
+    !p.store_url && Object.values(p.agent_links ?? {}).filter(Boolean).length === 0;
+  /** Produkt wymagający uzupełnienia: brak zdjęcia, brak QC albo brak linku. */
+  const needsFix = (p: Product) => brokenImage(p) || noQc(p) || noLink(p);
+
+  const todo = useMemo(() => (products ?? []).filter(needsFix), [products]);
 
   const matched = useMemo(() => {
-    const list = ordered.filter((p) =>
+    const base = onlyIssues ? ordered.filter(needsFix) : ordered;
+    const list = base.filter((p) =>
       q
         ? [p.title, p.category, p.batch, p.store_name].some((v) =>
             (v ?? "").toLowerCase().includes(q),
@@ -1211,16 +1219,21 @@ function ProductsTab() {
         : true,
     );
     if (orderIds) return list;
-    // Stabilne sortowanie: najpierw produkty bez zdjęcia.
+    // Stabilne sortowanie: najpierw produkty do uzupełnienia.
     return list
       .map((p, i) => ({ p, i }))
-      .sort((a, b) => Number(brokenImage(b.p)) - Number(brokenImage(a.p)) || a.i - b.i)
+      .sort(
+        (a, b) =>
+          Number(brokenImage(b.p)) - Number(brokenImage(a.p)) ||
+          Number(needsFix(b.p)) - Number(needsFix(a.p)) ||
+          a.i - b.i,
+      )
       .map((x) => x.p);
-  }, [ordered, q, orderIds]);
+  }, [ordered, q, orderIds, onlyIssues]);
 
   useEffect(() => {
     setLimit(ADMIN_PAGE_SIZE);
-  }, [q]);
+  }, [q, onlyIssues]);
 
   const visible = matched.slice(0, limit);
   const remaining = matched.length - visible.length;
