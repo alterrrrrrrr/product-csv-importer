@@ -1399,6 +1399,64 @@ function ProductsTab() {
 
   return (
     <section className="space-y-6">
+      <div className="rounded-3xl border border-primary/40 bg-surface p-6 glow-ring">
+        <div className="mb-1 flex flex-wrap items-center justify-between gap-2">
+          <h2 className="text-lg font-bold">⚠️ Do uzupełnienia ({todo.length})</h2>
+          <button className={btnGhost} onClick={() => setOnlyIssues((v) => !v)}>
+            {onlyIssues ? "Pokaż wszystkie na liście" : "Filtruj listę poniżej"}
+          </button>
+        </div>
+        <p className="mb-4 text-xs text-muted-foreground">
+          Produkty bez zdjęcia, bez zdjęć QC lub bez linku do sklepu. Kliknij „Edytuj”, aby
+          uzupełnić od razu w formularzu poniżej.
+        </p>
+        {todo.length === 0 ? (
+          <p className="text-sm text-muted-foreground">Wszystko uzupełnione 🎉</p>
+        ) : (
+          <ul className="max-h-96 space-y-2 overflow-y-auto pr-1">
+            {todo.slice(0, 100).map((p) => (
+              <li
+                key={p.id}
+                className="flex items-center gap-3 rounded-lg border border-border bg-secondary p-2.5"
+              >
+                {p.image_url ? (
+                  <img src={p.image_url} alt="" className="h-9 w-9 rounded-lg object-cover" />
+                ) : (
+                  <span className="grid h-9 w-9 place-items-center rounded-lg bg-surface-deep text-xs">
+                    🚫
+                  </span>
+                )}
+                <span className="flex-1 truncate text-sm font-semibold">{p.title}</span>
+                <span className="flex flex-wrap gap-1">
+                  {brokenImage(p) ? (
+                    <span className="rounded-full bg-destructive/15 px-2 py-0.5 text-[10px] font-bold uppercase text-destructive">
+                      brak zdjęcia
+                    </span>
+                  ) : null}
+                  {noQc(p) ? (
+                    <span className="rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-bold uppercase text-primary">
+                      brak QC
+                    </span>
+                  ) : null}
+                  {noLink(p) ? (
+                    <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px] font-bold uppercase text-muted-foreground">
+                      brak linku
+                    </span>
+                  ) : null}
+                </span>
+                <button className={btnGhost} onClick={() => editProduct(p)}>
+                  Edytuj
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+        {todo.length > 100 ? (
+          <p className="mt-3 text-xs text-muted-foreground">
+            Pokazano pierwsze 100 z {todo.length} — użyj filtra listy poniżej dla reszty.
+          </p>
+        ) : null}
+      </div>
       <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
         <div className="rounded-3xl border border-border bg-surface p-6 shadow-lg shadow-black/20">
           <h2 className="mb-4 text-lg font-bold">
