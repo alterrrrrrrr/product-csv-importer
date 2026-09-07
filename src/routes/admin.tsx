@@ -1186,6 +1186,7 @@ function ProductsTab() {
   const [limit, setLimit] = useState(ADMIN_PAGE_SIZE);
   // Optymistyczna kolejność — lista przestawia się natychmiast, zapis leci w tle.
   const [orderIds, setOrderIds] = useState<string[] | null>(null);
+  const [onlyIssues, setOnlyIssues] = useState(false);
 
   const ordered = useMemo(() => {
     const list = products ?? [];
